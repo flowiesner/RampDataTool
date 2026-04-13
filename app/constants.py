@@ -34,7 +34,7 @@ else:
     _BUNDLE_DIR = _EXE_DIR
 
 DB_PATH   = os.path.join(_EXE_DIR,    "ramp_data.db")
-TEAM_PATH = os.path.join(_BUNDLE_DIR, "team.png")
+TEAM_PATH = os.path.join(_BUNDLE_DIR, "images/team.png")
 
 # ── CTk theme ──────────────────────────────────────────────────────────────────
 ctk.set_appearance_mode("dark")
