@@ -1,6 +1,6 @@
 # Ramp Data Collection Tool
 
-A desktop application for recording and visualising sensor data collected during ramp and stair traversal experiments — intended for robotics or mobility-device research where encoder, IMU, and timing measurements need to be organised across multiple test sessions.
+A desktop application for recording and visualising sensor data collected during ramp and stair traversal experiments — intended to be used for development of a robot for the RoboCupJunior Rescue Maze where encoder, IMU, and timing measurements need to be organised across multiple test sessions.
 
 ## What it does
 
