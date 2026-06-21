@@ -24,16 +24,25 @@ except ImportError:
 # ── paths ──────────────────────────────────────────────────────────────────────
 import sys
 
-# When frozen as .exe (PyInstaller), bundled data lives in sys._MEIPASS;
-# the database should always sit next to the executable / script.
+# Bundled read-only assets live in sys._MEIPASS when frozen by PyInstaller.
+# Writable user data (the SQLite DB) must NOT live inside the bundle:
+#   - macOS .app in /Applications has no write permission there
+#   - an unsigned/quarantined .app runs from a read-only translocated path
+#     (Gatekeeper App Translocation), so writes next to the executable fail
+# => on macOS the DB goes to ~/Library/Application Support/RampDataTool.
 if getattr(sys, "frozen", False):
-    _EXE_DIR    = os.path.dirname(sys.executable)
     _BUNDLE_DIR = sys._MEIPASS
+    if sys.platform == "darwin":
+        _DATA_DIR = os.path.expanduser("~/Library/Application Support/RampDataTool")
+    else:
+        _DATA_DIR = os.path.dirname(sys.executable)  # Windows: next to the .exe
 else:
-    _EXE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    _BUNDLE_DIR = _EXE_DIR
+    _BUNDLE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    _DATA_DIR   = _BUNDLE_DIR
 
-DB_PATH   = os.path.join(_EXE_DIR,    "ramp_data.db")
+os.makedirs(_DATA_DIR, exist_ok=True)
+
+DB_PATH   = os.path.join(_DATA_DIR,   "ramp_data.db")
 TEAM_PATH = os.path.join(_BUNDLE_DIR, "images/team.png")
 
 # ── CTk theme ──────────────────────────────────────────────────────────────────
