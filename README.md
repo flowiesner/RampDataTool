@@ -35,6 +35,27 @@ python main.py
 
 A pre-built Windows executable is available under `dist/RampDataCollectionTool.exe` — no Python installation required.
 
+## Building a standalone app
+
+A [PyInstaller](https://pyinstaller.org/) spec (`RampDataTool.spec`) is included and bundles
+the CustomTkinter assets and `images/` that the bare CLI invocation would otherwise miss.
+
+```bash
+pip install pyinstaller
+pyinstaller RampDataTool.spec
+```
+
+- **macOS** → produces `dist/RampDataTool.app`. Bundles must be built natively on macOS
+  (no cross-compiling). For an unsigned build, clear the quarantine flag before first launch:
+  ```bash
+  xattr -dr com.apple.quarantine dist/RampDataTool.app
+  ```
+- **Windows / Linux** → produces a `dist/RampDataTool/` folder with the executable.
+
+The SQLite database is stored next to the executable on Windows/Linux, and in
+`~/Library/Application Support/RampDataTool/` on macOS (writing inside an `.app`
+bundle is not reliable, e.g. under Gatekeeper App Translocation).
+
 ## Project structure
 
 ```
